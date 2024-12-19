@@ -1,20 +1,39 @@
-import 'package:counter/counter.dart';
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class AppState extends StatefulWidget {
+  const AppState({super.key});
+
+  @override
+  State<AppState> createState() {
+    return _AppState();
+  }
+}
+
+class _AppState extends State<AppState> {
+  var count = 0;
+
+  setCount() {
+    setState(() {
+      count++;
+    });
+  }
 
   @override
   Widget build(context) {
-    return (Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Colors.blueAccent, Colors.deepPurple],
-        ),
-      ),
-      child: const CounterState(),
-    ));
+    return Center(
+      child: Container(
+          decoration: const BoxDecoration(
+              gradient:
+                  LinearGradient(colors: [Colors.white54, Colors.greenAccent])),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(child: Text("$count")),
+              TextButton(onPressed: setCount, child: const Text("press me :)"))
+            ],
+          )),
+    );
   }
 }
