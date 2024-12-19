@@ -1,16 +1,14 @@
-# rolling_dice_app
+# Rolling Dice App
 
-A new Flutter project.
+![Demo Gif](roll-dice-demo.gif)
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+The **Rolling Dice App** is a simple and interactive application designed to enhance skills in state management, asset handling, random number generation, and mathematical operations.
 
-A few resources to get you started if this is your first Flutter project:
+## Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **State Management:** Efficiently manage the state of the application to ensure seamless user interactions.
+- **Asset Handling:** Incorporate and manage graphical assets for a visually appealing interface.
+- **Random Number Generation:** Implement randomness to simulate realistic dice rolls.
+- **Mathematical Operations:** Utilize mathematical logic to calculate and display results.
