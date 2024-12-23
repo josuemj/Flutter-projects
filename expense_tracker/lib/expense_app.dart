@@ -78,7 +78,7 @@ class _ExpenseAppState extends State<ExpenseApp> {
         title: Text(
           "Flutter Tracker",
         ),
-        backgroundColor: Colors.amberAccent,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         actions: [
           IconButton(
             onPressed: _openAddExpenseOverlay,
