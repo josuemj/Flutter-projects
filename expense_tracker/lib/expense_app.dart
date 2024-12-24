@@ -33,7 +33,9 @@ class _ExpenseAppState extends State<ExpenseApp> {
     showModalBottomSheet(
         isScrollControlled: true, // modal takes all space available
         context: context,
-        builder: (ctx) => NewExpense(onAddExpense: _addExpense));
+        builder: (ctx) => NewExpense(onAddExpense: _addExpense),
+        useSafeArea:
+            true); // avoid the modal to do not overlap with system camera or control panel
   }
 
   void _addExpense(Expense expense) {
@@ -64,6 +66,9 @@ class _ExpenseAppState extends State<ExpenseApp> {
 
   @override
   Widget build(BuildContext context) {
+    //need width available
+    final width = MediaQuery.of(context).size.width;
+
     Widget mainContent =
         const Center(child: Text('No expenses, start adding some'));
 
@@ -87,14 +92,25 @@ class _ExpenseAppState extends State<ExpenseApp> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: expenses),
-          Expanded(
-            child: mainContent,
-          ),
-        ],
-      ),
+      body: (width < 600) // Cheking on device size to adapt UI
+          ? Column(
+              children: [
+                Chart(expenses: expenses),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                  child: Chart(expenses: expenses),
+                ),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            ),
     );
   }
 }
