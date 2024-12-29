@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/screens/meal_detail.dart';
 import 'package:meals/widgets/meal_item_trait.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -9,10 +10,12 @@ class MealListItem extends StatelessWidget {
     super.key,
     required this.meal,
     required this.categoryColor,
+    required this.onSelectedMeal,
   });
 
   final Meal meal;
   final Color categoryColor;
+  final void Function(Meal meal, BuildContext context) onSelectedMeal;
 
   String get complexityText {
     return meal.complexity.name[0].toLowerCase() +
@@ -35,7 +38,9 @@ class MealListItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge, // allows edge radius
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onSelectedMeal(meal, context);
+        },
         child: Stack(
           children: [
             FadeInImage(
