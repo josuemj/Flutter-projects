@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/meals.dart';
+import 'package:meals/widgets/mian_drawar.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -65,6 +66,7 @@ class _TabScreenState extends State<TabScreen> {
       activePageTitle = 'Categories';
     }
     return Scaffold(
+      drawer: const MianDrawar(),
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
