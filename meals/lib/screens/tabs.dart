@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/screens/categories.dart';
+import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
 import 'package:meals/widgets/mian_drawar.dart';
+
+const kInitialFilters = {
+  Filter.glutenFree: false,
+  Filter.lactoseFree: false,
+  Filter.vegetarian: false,
+  Filter.vegan: false,
+};
 
 class TabScreen extends StatefulWidget {
   const TabScreen({super.key});
@@ -15,6 +24,7 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   int _selectedPageIndex = 0;
+  Map<Filter, bool> _selectedFilters = kInitialFilters;
 
   final List<Meal> _favoriteMeals = [];
 
@@ -46,9 +56,48 @@ class _TabScreenState extends State<TabScreen> {
     );
   }
 
+  void _setScreen(String identifier) async {
+    // future
+    Navigator.pop(context); //closing side bar
+
+    if (identifier == 'filters') {
+      final result = await Navigator.of(context).push<Map<Filter, bool>>(
+        // result
+        MaterialPageRoute(
+          builder: (ctx) => FiltersScreen(currentFilters: _selectedFilters),
+        ),
+      );
+      setState(() {
+        _selectedFilters = result ?? kInitialFilters;
+      });
+
+      // print(result);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final availableMeals = dummyMeals.where((meal) {
+      if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
+        // _selectedFilters[Filter.glutenFree]! never be null
+        return false;
+      }
+      if (_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian) {
+        return false;
+      }
+      if (_selectedFilters[Filter.vegan]! && !meal.isVegan) {
+        return false;
+      }
+      return true;
+    }).toList();
+
     Widget activePage = CategoriesScreen(
+      availableMeals: availableMeals,
       onToggleFavorite: _toggleMealFavorites,
     );
     var activePageTitle = 'Categories';
@@ -61,12 +110,15 @@ class _TabScreenState extends State<TabScreen> {
       activePageTitle = 'Your favorites';
     } else {
       activePage = CategoriesScreen(
+        availableMeals: availableMeals,
         onToggleFavorite: _toggleMealFavorites,
       );
       activePageTitle = 'Categories';
     }
     return Scaffold(
-      drawer: const MianDrawar(),
+      drawer: MianDrawar(
+        onSelectedScreen: _setScreen,
+      ),
       appBar: AppBar(
         title: Text(activePageTitle),
       ),

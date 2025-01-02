@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MianDrawar extends StatelessWidget {
-  const MianDrawar({super.key});
+  const MianDrawar({
+    super.key,
+    required this.onSelectedScreen,
+  });
+
+  final void Function(String identifier) onSelectedScreen;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -52,7 +57,9 @@ class MianDrawar extends StatelessWidget {
                   fontSize: 24,
                 ),
           ),
-          onTap: () {},
+          onTap: () {
+            onSelectedScreen('meals');
+          },
         ),
         ListTile(
           // row or list item
@@ -68,7 +75,9 @@ class MianDrawar extends StatelessWidget {
                   fontSize: 24,
                 ),
           ),
-          onTap: () {},
+          onTap: () {
+            onSelectedScreen('filters');
+          },
         )
       ],
     ));
