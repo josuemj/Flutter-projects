@@ -9,13 +9,11 @@ class MealsScreen extends StatelessWidget {
     this.title,
     required this.meals,
     required this.categoryColor,
-    required this.onToggleFavorite,
   });
 
   final Color categoryColor;
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
 
   void _selectedMeal(
     BuildContext context,
@@ -26,7 +24,6 @@ class MealsScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (ctx) => MealDetailScreen(
           meal: meal,
-          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );
