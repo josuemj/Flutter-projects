@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal.dart';
 
+//A notifier that allows to change data
 class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   //type of data
   FavoriteMealsNotifier()
