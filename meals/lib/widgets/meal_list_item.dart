@@ -43,15 +43,18 @@ class MealListItem extends StatelessWidget {
         },
         child: Stack(
           children: [
-            FadeInImage(
-              height: 200,
-              width: double.infinity,
-              // first widget on stack
-              fit: BoxFit.cover, // adapts image size
-              placeholder:
-                  MemoryImage(kTransparentImage), // image while loading
-              image: NetworkImage(
-                  meal.imageUrl), // target image fetch from internet (url)
+            Hero(
+              tag: meal.id, // unique id for widget
+              child: FadeInImage(
+                height: 200,
+                width: double.infinity,
+                // first widget on stack
+                fit: BoxFit.cover, // adapts image size
+                placeholder:
+                    MemoryImage(kTransparentImage), // image while loading
+                image: NetworkImage(
+                    meal.imageUrl), // target image fetch from internet (url)
+              ),
             ),
             Positioned(
               bottom: 0,
