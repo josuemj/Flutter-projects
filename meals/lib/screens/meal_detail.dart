@@ -21,22 +21,35 @@ class MealDetailScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            onPressed: () {
-              //triggering provider method
-              final wasAdded = ref
-                  .read(favoriteMealsProvider.notifier)
-                  .toggleMealsFavoriteStatus(meal);
-              //.notifier provides access to the notiier class that includes the triggered method
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                      wasAdded ? 'Meals added as a favorite' : 'meal removed'),
+              onPressed: () {
+                //triggering provider method
+                final wasAdded = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleMealsFavoriteStatus(meal);
+                //.notifier provides access to the notiier class that includes the triggered method
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(wasAdded
+                        ? 'Meals added as a favorite'
+                        : 'meal removed'),
+                  ),
+                );
+              },
+              icon: AnimatedSwitcher(
+                // on transition between 2 values
+                // implicit animation
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                      turns: Tween(begin: 0.5, end: 1.0).animate(animation),
+                      child: child);
+                },
+                child: Icon(
+                  isFavorite ? Icons.star : Icons.star_border,
+                  key: ValueKey(isFavorite), // key on
                 ),
-              );
-            },
-            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
-          ),
+              )),
         ],
       ),
       body: SingleChildScrollView(
