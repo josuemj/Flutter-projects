@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_list/data/dummy_items.dart';
+import 'package:shopping_list/model/grocery_item.dart';
 import 'package:shopping_list/widgets/new_item.dart';
 
 class GroceryList extends StatefulWidget {
@@ -10,10 +10,28 @@ class GroceryList extends StatefulWidget {
 }
 
 class _GroceryListState extends State<GroceryList> {
-  void _addItem() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const NewItem(),
-    ));
+  final List<GroceryItem> _groceryItems = [];
+  void _addItem() async {
+    final newItem = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const NewItem(),
+      ),
+    );
+
+    if (newItem == null) {
+      // could be null as user turn back withoth saving item
+      return;
+    }
+
+    setState(() {
+      _groceryItems.add(newItem);
+    });
+  }
+
+  void removeItem(int index) {
+    setState(() {
+      _groceryItems.removeAt(index);
+    });
   }
 
   @override
@@ -30,20 +48,26 @@ class _GroceryListState extends State<GroceryList> {
           'Your groceries',
         ),
       ),
-      body: ListView.builder(
-        itemCount: groceryItems.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(groceryItems[index].name),
-          leading: Container(
-            width: 24,
-            height: 24,
-            color: groceryItems[index].category.color,
-          ),
-          trailing: Text(
-            groceryItems[index].quantity.toString(),
-          ),
-        ),
-      ),
+      body: _groceryItems.isEmpty
+          ? const Center(child: Text('Start by adding some items'))
+          : ListView.builder(
+              itemCount: _groceryItems.length,
+              itemBuilder: (context, index) => Dismissible(
+                onDismissed: (direction) => {removeItem(index)},
+                key: ValueKey(index),
+                child: ListTile(
+                  title: Text(_groceryItems[index].name),
+                  leading: Container(
+                    width: 24,
+                    height: 24,
+                    color: _groceryItems[index].category.color,
+                  ),
+                  trailing: Text(
+                    _groceryItems[index].quantity.toString(),
+                  ),
+                ),
+              ),
+            ),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shopping_list/data/categories.dart';
+import 'package:shopping_list/model/categories.dart';
+import 'package:shopping_list/model/grocery_item.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -14,10 +16,21 @@ class NewItem extends StatefulWidget {
 //form to display
 class _NewItemState extends State<NewItem> {
   final _formKey = GlobalKey<FormState>();
+  var _enteredName = '';
+  var _enteredQuantity = 1;
+  var _selectedCategory = categories[Categories
+      .vegetables]!; // initial not null value for categories drop down :)
 
   void _saveItem() {
-    _formKey.currentState!
-        .validate(); // not null (!) // validate calls validate methods on each field
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save(); // onSave funcs
+      Navigator.of(context).pop(GroceryItem(
+        id: DateTime.now().toString(),
+        name: _enteredName,
+        quantity: _enteredQuantity,
+        category: _selectedCategory,
+      ));
+    } // not null (!) // validate calls validate methods on each field
   }
 
   @override
@@ -30,6 +43,7 @@ class _NewItemState extends State<NewItem> {
           child: Column(
             children: [
               TextFormField(
+                onSaved: (value) => _enteredName = value!,
                 maxLength: 50,
                 decoration: const InputDecoration(
                   label: Text('Name'),
@@ -54,7 +68,7 @@ class _NewItemState extends State<NewItem> {
                       decoration: InputDecoration(
                         label: Text('quantity'),
                       ),
-                      initialValue: '1',
+                      initialValue: _enteredQuantity.toString(),
                       //initial value
                       validator: (value) {
                         if (value == null ||
@@ -66,26 +80,34 @@ class _NewItemState extends State<NewItem> {
                         }
                         return null; // valid
                       },
+                      onSaved: (value) => _enteredQuantity = int.parse(value!),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: DropdownButtonFormField(items: [
-                      for (final category in categories.entries)
-                        DropdownMenuItem(
-                            value: category.value,
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 16,
-                                  height: 16,
-                                  color: category.value.color,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(category.value.title)
-                              ],
-                            ))
-                    ], onChanged: (value) {}),
+                    child: DropdownButtonFormField(
+                        value: _selectedCategory,
+                        items: [
+                          for (final category in categories.entries)
+                            DropdownMenuItem(
+                                value: category.value,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 16,
+                                      height: 16,
+                                      color: category.value.color,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(category.value.title)
+                                  ],
+                                ))
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                          });
+                        }),
                   )
                 ],
               ),
