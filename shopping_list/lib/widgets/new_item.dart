@@ -13,12 +13,20 @@ class NewItem extends StatefulWidget {
 
 //form to display
 class _NewItemState extends State<NewItem> {
+  final _formKey = GlobalKey<FormState>();
+
+  void _saveItem() {
+    _formKey.currentState!
+        .validate(); // not null (!) // validate calls validate methods on each field
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Form(
+          key: _formKey, // GlobalKey() obj,
           child: Column(
             children: [
               TextFormField(
@@ -27,18 +35,37 @@ class _NewItemState extends State<NewItem> {
                   label: Text('Name'),
                 ),
                 validator: (value) {
-                  return 'Dem';
-                }, //
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1 ||
+                      value.trim().length > 50) {
+                    return 'Must be between 1 and 50 characters'; // error message
+                  }
+                  return null; // valid
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Expanded(
                     child: TextFormField(
+                      keyboardType:
+                          TextInputType.number, //number keyboard optmized
                       decoration: InputDecoration(
                         label: Text('quantity'),
                       ),
-                      initialValue: '1', //initial value
+                      initialValue: '1',
+                      //initial value
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) ==
+                                null || //convert str to num return null if not int
+                            int.tryParse(value)! <= 0) {
+                          return 'Must be a valid positive number'; // error message
+                        }
+                        return null; // valid
+                      },
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -66,8 +93,8 @@ class _NewItemState extends State<NewItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(onPressed: () {}, child: const Text('Reset')),
-                  ElevatedButton(onPressed: () {}, child: Text('Add item'))
+                  TextButton(onPressed: () {}, child: const Text('R eset')),
+                  ElevatedButton(onPressed: _saveItem, child: Text('Add item'))
                 ],
               ) //instead of TextField()
             ],
