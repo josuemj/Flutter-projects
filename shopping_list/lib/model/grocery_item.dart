@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/foundation.dart';
 import 'package:shopping_list/model/category.dart';
 
 class GroceryItem {

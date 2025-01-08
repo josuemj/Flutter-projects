@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class GroceryCategory {
   const GroceryCategory(
-    this.categoryName,
-    this.categoryColor,
+    this.title,
+    this.color,
   );
-  final String categoryName;
-  final Color categoryColor;
+  final String title;
+  final Color color;
 }
