@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shopping_list/data/categories.dart';
@@ -22,15 +26,42 @@ class _NewItemState extends State<NewItem> {
   var _selectedCategory = categories[Categories
       .vegetables]!; // initial not null value for categories drop down :)
 
-  void _saveItem() {
+  void _saveItem() async {
+    String apiUrl = dotenv.get('FIREBASE_URL');
+    String apiPath = dotenv.get('DB_PATH');
+
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save(); // onSave funcs
-      Navigator.of(context).pop(GroceryItem(
-        id: DateTime.now().toString(),
-        name: _enteredName,
-        quantity: _enteredQuantity,
-        category: _selectedCategory,
-      ));
+
+      final url = Uri.https(apiUrl, apiPath); //path into firebase
+      final response = await htpp.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json', //json aplication
+        },
+        body: json.encode(
+          {
+            // body request (data)
+            'name': _enteredName,
+            'quantity': _enteredQuantity,
+            'category': _selectedCategory.title,
+          },
+        ),
+      );
+
+      print(response.body);
+      print(response.statusCode);
+
+      if (!context.mounted) {
+        return;
+      }
+      Navigator.of(context).pop();
+      // Navigator.of(context).pop(GroceryItem(
+      //   id: DateTime.now().toString(),
+      //   name: _enteredName,
+      //   quantity: _enteredQuantity,
+      //   category: _selectedCategory,
+      // ));
     } // not null (!) // validate calls validate methods on each field
   }
 
@@ -130,3 +161,16 @@ class _NewItemState extends State<NewItem> {
     );
   }
 }
+
+/*
+E/flutter ( 4826): [ERROR:flutter/runtime/dart_vm_initializer.cc(40)] Unhandled Exception:
+ ClientException: Connection reset by peer, 
+ uri=http://flutter-prep-e8ab4-default-rtdb.firebaseio.com/shopping-list.json
+E/flutter ( 4826): #0      IOClient.send (package:http/src/io_client.dart:156:7)
+E/flutter ( 4826): <asynchronous suspension>
+E/flutter ( 4826): #1      BaseClient._sendUnstreamed (package:http/src/base_client.dart:93:32)
+E/flutter ( 4826): <asynchronous suspension>
+E/flutter ( 4826): #2      _withClient (package:http/http.dart:167:12)
+E/flutter ( 4826): <asynchronous suspension>
+E/flutter ( 4826): 
+*/
