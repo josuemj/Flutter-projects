@@ -7,7 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:shopping_list/data/categories.dart';
 import 'package:shopping_list/model/categories.dart';
 import 'package:shopping_list/model/grocery_item.dart';
-import 'package:http/http.dart' as htpp;
+import 'package:http/http.dart' as http;
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -34,7 +34,7 @@ class _NewItemState extends State<NewItem> {
       _formKey.currentState!.save(); // onSave funcs
 
       final url = Uri.https(apiUrl, apiPath); //path into firebase
-      final response = await htpp.post(
+      final response = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json', //json aplication
@@ -52,10 +52,19 @@ class _NewItemState extends State<NewItem> {
       print(response.body);
       print(response.statusCode);
 
+      final Map<String, dynamic> resData = json.decode(response.body);
       if (!context.mounted) {
         return;
       }
-      Navigator.of(context).pop();
+
+      Navigator.of(context).pop(
+        GroceryItem(
+          id: resData['name'],
+          name: _enteredName,
+          quantity: _enteredQuantity,
+          category: _selectedCategory,
+        ),
+      );
       // Navigator.of(context).pop(GroceryItem(
       //   id: DateTime.now().toString(),
       //   name: _enteredName,
