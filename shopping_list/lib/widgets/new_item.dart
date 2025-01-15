@@ -25,6 +25,7 @@ class _NewItemState extends State<NewItem> {
   var _enteredQuantity = 1;
   var _selectedCategory = categories[Categories
       .vegetables]!; // initial not null value for categories drop down :)
+  var _isSending = false;
 
   void _saveItem() async {
     String apiUrl = dotenv.get('FIREBASE_URL');
@@ -32,6 +33,9 @@ class _NewItemState extends State<NewItem> {
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save(); // onSave funcs
+      setState(() {
+        _isSending = true;
+      });
 
       final url = Uri.https(apiUrl, apiPath); //path into firebase
       final response = await http.post(
@@ -156,8 +160,20 @@ class _NewItemState extends State<NewItem> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(onPressed: () {}, child: const Text('R eset')),
-                  ElevatedButton(onPressed: _saveItem, child: Text('Add item'))
+                  TextButton(
+                    onPressed: _isSending ? null : () {},
+                    child: const Text('Reset'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _isSending ? null : _saveItem,
+                    child: _isSending
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Text('Add item'),
+                  )
                 ],
               ) //instead of TextField()
             ],
