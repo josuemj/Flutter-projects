@@ -17,62 +17,50 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
-  var _isLoading = true;
+  late Future<List<GroceryItem>> _loadedItems; // no initial value (late)
   String? _error;
   String apiUrl = dotenv.get('FIREBASE_URL');
   String apiPath = dotenv.get('DB_PATH');
   @override
   void initState() {
-    _loadItems();
+    _loadedItems = _loadItems(); //late
 
     super.initState();
   }
 
-  void _loadItems() async {
+  Future<List<GroceryItem>> _loadItems() async {
     final url = Uri.https(apiUrl, apiPath); //path into firebase
 
-    try {
-      final response = await http.get(url); //getting items
-      print(response.statusCode); //if > 400, all error code
-      if (response.statusCode >= 400) {
-        setState(() {
-          _error = 'Failed to fetch items';
-        });
-      }
-
-      print(response.body);
-
-      if (response.body == 'null') {
-        //firebase return 'null' string
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      }
-
-      final Map<String, dynamic> listData =
-          json.decode(response.body); //converitng repsonse to JSON
-      final List<GroceryItem> _loadedItems = [];
-      for (final item in listData.entries) {
-        final category = categories.entries
-            .firstWhere(
-                (catItem) => catItem.value.title == item.value['category'])
-            .value;
-        _loadedItems.add(GroceryItem(
-            id: item.key,
-            name: item.value['name'],
-            quantity: item.value['quantity'],
-            category: category));
-      }
-      setState(() {
-        _groceryItems = _loadedItems;
-        _isLoading = false;
-      });
-    } catch (error) {
-      setState(() {
-        _error = 'Somethins went wrong';
-      });
+    final response = await http.get(url); //getting items
+    print(response.statusCode); //if > 400, all error code
+    if (response.statusCode >= 400) {
+      throw Exception(
+          'Failde to fetch grocerie'); // rejected future will be true on future builder
     }
+
+    print(response.body);
+
+    if (response.body == 'null') {
+      //firebase return 'null' string
+
+      return [];
+    }
+
+    final Map<String, dynamic> listData =
+        json.decode(response.body); //converitng repsonse to JSON
+    final List<GroceryItem> _loadedItems = [];
+    for (final item in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+              (catItem) => catItem.value.title == item.value['category'])
+          .value;
+      _loadedItems.add(GroceryItem(
+          id: item.key,
+          name: item.value['name'],
+          quantity: item.value['quantity'],
+          category: category));
+    }
+    return _loadedItems;
   }
 
   void _addItem() async {
@@ -112,44 +100,6 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const Center(child: Text('Start by adding some items'));
-
-    if (_isLoading) {
-      content = const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
-    if (_groceryItems.isNotEmpty) {
-      content = ListView.builder(
-        itemCount: _groceryItems.length,
-        itemBuilder: (context, index) => Dismissible(
-          onDismissed: (direction) => {
-            _removeItem(
-              _groceryItems[index],
-            )
-          },
-          key: ValueKey(_groceryItems[index].id),
-          child: ListTile(
-            title: Text(_groceryItems[index].name),
-            leading: Container(
-              width: 24,
-              height: 24,
-              color: _groceryItems[index].category.color,
-            ),
-            trailing: Text(
-              _groceryItems[index].quantity.toString(),
-            ),
-          ),
-        ),
-      );
-    }
-    if (_error != null) {
-      content = Center(
-        child: Text(_error!),
-      );
-    }
-
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -162,6 +112,45 @@ class _GroceryListState extends State<GroceryList> {
             'Your groceries',
           ),
         ),
-        body: content);
+        body: FutureBuilder(
+            future: _loadedItems,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+
+              if (snapshot.data!.isEmpty) {
+                return const Center(child: Text('Start by adding some items'));
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) => Dismissible(
+                  onDismissed: (direction) => {
+                    _removeItem(
+                      snapshot.data![index],
+                    )
+                  },
+                  key: ValueKey(snapshot.data![index].id),
+                  child: ListTile(
+                    title: Text(snapshot.data![index].name),
+                    leading: Container(
+                      width: 24,
+                      height: 24,
+                      color: snapshot.data![index].category.color,
+                    ),
+                    trailing: Text(
+                      snapshot.data![index].quantity.toString(),
+                    ),
+                  ),
+                ),
+              );
+            }));
   }
 }
