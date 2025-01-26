@@ -13,6 +13,39 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreen extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
 
+  void _savePlace() {
+    final enteredText = _titleController.text;
+
+    if (enteredText == null || enteredText.isEmpty) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text(
+                'Fill place',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'understood',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
+      return;
+    }
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -39,7 +72,7 @@ class _AddPlaceScreen extends State<AddPlaceScreen> {
               height: 16,
             ),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: _savePlace,
               icon: const Icon(Icons.add),
               label: const Text('add place'),
             )
