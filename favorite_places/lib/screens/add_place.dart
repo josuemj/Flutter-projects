@@ -1,3 +1,4 @@
+import 'package:favorite_places/widgets/dialogs/fill_place_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,27 +21,7 @@ class _AddPlaceScreen extends State<AddPlaceScreen> {
       showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: const Text(
-                'Fill place',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'understood',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                )
-              ],
-            );
+            return FillPlaceDialog();
           });
       return;
     }
