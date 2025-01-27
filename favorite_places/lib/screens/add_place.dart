@@ -1,23 +1,25 @@
+import 'package:favorite_places/providers/user_places.dart';
 import 'package:favorite_places/widgets/dialogs/fill_place_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlaceScreen extends StatefulWidget {
+class AddPlaceScreen extends ConsumerStatefulWidget {
   const AddPlaceScreen({super.key});
 
   @override
-  State<AddPlaceScreen> createState() {
+  ConsumerState<AddPlaceScreen> createState() {
     return _AddPlaceScreen();
   }
 }
 
-class _AddPlaceScreen extends State<AddPlaceScreen> {
+class _AddPlaceScreen extends ConsumerState<AddPlaceScreen> {
   final _titleController = TextEditingController();
 
   void _savePlace() {
-    final enteredText = _titleController.text;
+    final enteredTitle = _titleController.text;
 
-    if (enteredText == null || enteredText.isEmpty) {
+    if (enteredTitle.isEmpty) {
       showDialog(
           context: context,
           builder: (context) {
@@ -25,6 +27,11 @@ class _AddPlaceScreen extends State<AddPlaceScreen> {
           });
       return;
     }
+    //reach out provider
+
+    ref.read(UserPlacesProvider.notifier).addPlace(enteredTitle);
+
+    Navigator.of(context).pop();
   }
 
   @override
