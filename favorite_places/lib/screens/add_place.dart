@@ -1,5 +1,6 @@
 import 'package:favorite_places/providers/user_places.dart';
 import 'package:favorite_places/widgets/dialogs/fill_place_dialog.dart';
+import 'package:favorite_places/widgets/image_input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,6 +60,11 @@ class _AddPlaceScreen extends ConsumerState<AddPlaceScreen> {
             const SizedBox(
               height: 16,
             ),
+            // image input
+            const SizedBox(
+              height: 10,
+            ),
+            ImageInput(),
             ElevatedButton.icon(
               onPressed: _savePlace,
               icon: const Icon(Icons.add),
