@@ -23,15 +23,35 @@ class _AppState extends State<AppState> {
     return Center(
       child: Container(
           decoration: const BoxDecoration(
-              gradient:
-                  LinearGradient(colors: [Colors.white54, Colors.greenAccent])),
+              gradient: LinearGradient(colors: [
+            Color.fromARGB(136, 80, 60, 136),
+            Colors.greenAccent
+          ])),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(child: Text("$count")),
-              TextButton(onPressed: setCount, child: const Text("press me :)"))
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("$count", style: const TextStyle(fontSize: 50)),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                          foregroundColor:
+                              const Color.fromARGB(255, 0, 255, 242),
+                          padding: const EdgeInsets.all(16.0),
+                          textStyle: const TextStyle(fontSize: 20),
+                        ),
+                        onPressed: setCount,
+                        child: const Text("press me :)",
+                            style: TextStyle(
+                              fontSize: 30,
+                            ))),
+                  ],
+                ),
+              ),
             ],
           )),
     );
