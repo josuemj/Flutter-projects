@@ -42,7 +42,7 @@ class _AppState extends State<AppState> {
                           foregroundColor:
                               const Color.fromARGB(255, 0, 255, 242),
                           padding: const EdgeInsets.all(16.0),
-                          textStyle: const TextStyle(fontSize: 20),
+                          textStyle: const TextStyle(fontSize: 22),
                         ),
                         onPressed: setCount,
                         child: const Text("press me :)",
