@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   const List<Color> colors = [
@@ -33,10 +34,11 @@ class _DiceRollerState extends State<DiceRoller> {
   int _currentDiceRoll = 1;
 
   void _rollDice() {
+    final random = Random();
+    int number = random.nextInt(6) + 1;
+
     setState(() {
-      _currentDiceRoll =
-          (1 + (6 * (new DateTime.now().millisecondsSinceEpoch % 1000) / 1000))
-              .toInt();
+      _currentDiceRoll = number;
       print('Dice rolled to $_currentDiceRoll');
     });
   }
