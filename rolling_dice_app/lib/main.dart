@@ -16,10 +16,43 @@ void main() {
             gradient: RadialGradient(colors: colors, radius: 1),
           ),
           child: Center(
-            child: Text("Hello, world!"),
+            child: DiceRoller(),
           ),
         ),
       ),
     ),
   );
+}
+
+class DiceRoller extends StatefulWidget {
+  @override
+  _DiceRollerState createState() => _DiceRollerState();
+}
+
+class _DiceRollerState extends State<DiceRoller> {
+  int _currentDiceRoll = 1;
+
+  void _rollDice() {
+    setState(() {
+      _currentDiceRoll =
+          (1 + (6 * (new DateTime.now().millisecondsSinceEpoch % 1000) / 1000))
+              .toInt();
+      print('Dice rolled to $_currentDiceRoll');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('assets/images/dice-$_currentDiceRoll.png',
+            width: 200, height: 200),
+        ElevatedButton(
+          onPressed: _rollDice,
+          child: Text('Roll Dice'),
+        ),
+      ],
+    );
+  }
 }
