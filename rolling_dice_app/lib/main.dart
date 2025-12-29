@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'theme/app_gradients.dart';
 import 'dart:math';
 
 void main() {
-  const List<Color> colors = [
-    Color.fromARGB(255, 48, 0, 45),
-    Color.fromRGBO(79, 0, 107, 1),
-    Color.fromARGB(255, 110, 5, 110),
-    Color.fromARGB(255, 81, 5, 88),
-  ];
-
   runApp(
     MaterialApp(
       home: Scaffold(
         body: Container(
           decoration: BoxDecoration(
-            gradient: RadialGradient(colors: colors, radius: 1),
+            gradient: AppGradients.main,
           ),
           child: Center(
             child: DiceRoller(),
@@ -26,6 +20,8 @@ void main() {
 }
 
 class DiceRoller extends StatefulWidget {
+  const DiceRoller({super.key});
+
   @override
   _DiceRollerState createState() => _DiceRollerState();
 }
