@@ -9,7 +9,7 @@ class DiceRollerView extends StatelessWidget {
   });
 
   final int diceValue;
-  final VoidCallback onRoll;
+  final void Function() onRoll;
 
   @override
   Widget build(BuildContext context) {
