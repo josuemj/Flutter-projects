@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class StartView extends StatelessWidget {
-  const StartView({super.key});
+  const StartView({super.key, required this.startQuiz});
+
+  final VoidCallback startQuiz;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class StartView extends StatelessWidget {
         ),
         TextButton.icon(
           onPressed: () {
-            ;
+            startQuiz();
           },
           style: TextButton.styleFrom(foregroundColor: Colors.white),
           label: const Text("Start quiz", style: TextStyle(fontSize: 16)),
