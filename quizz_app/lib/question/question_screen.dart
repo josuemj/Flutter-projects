@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quizz_app/data/questions.dart';
+import 'package:quizz_app/question/question_view.dart';
 
 class QuestionScreen extends StatefulWidget {
   const QuestionScreen({super.key, required this.selectAnswer});
@@ -23,6 +25,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return QuestionView(
+      question: questions[currentQuestionIndex],
+      nextQuestion: nextQuestion,
+    );
   }
 }
