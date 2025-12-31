@@ -11,13 +11,18 @@ class QuestionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: question.answers.map((answer) {
-      return AnswerButton(
-          answerText: answer,
-          onTap: () {
-            nextQuestion(answer);
-          });
-    }).toList());
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: question.answers.map((answer) {
+            return AnswerButton(
+                answerText: answer,
+                onTap: () {
+                  nextQuestion(answer);
+                });
+          }).toList()),
+    );
   }
 }

@@ -31,15 +31,12 @@ class _QuizScreenState extends State<QuizScreen> {
     selectedAnswers.add(answer);
     setState(() {
       if (selectedAnswers.length == questions.length) {
-        endQuiz();
-      }
-    });
-  }
+        print("quiz ended");
 
-  // purpose is to show results screen
-  endQuiz() {
-    setState(() {
-      currentScreen = ResultsScreen();
+        currentScreen = ResultsScreen(
+          results: selectedAnswers,
+        );
+      }
     });
   }
 
