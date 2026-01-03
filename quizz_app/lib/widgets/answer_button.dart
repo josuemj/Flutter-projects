@@ -12,7 +12,7 @@ class AnswerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(

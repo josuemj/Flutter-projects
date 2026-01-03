@@ -18,13 +18,26 @@ class QuestionView extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: question.answers.map((answer) {
-                return AnswerButton(
-                    answerText: answer,
-                    onTap: () {
-                      nextQuestion(answer);
-                    });
-              }).toList()),
+              children: [
+                Text(
+                  question.text,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: const Color.fromARGB(223, 255, 255, 255),
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                ...question.answers.map((answer) {
+                  return AnswerButton(
+                      answerText: answer,
+                      onTap: () {
+                        nextQuestion(answer);
+                      });
+                }).toList()
+              ]),
         ));
   }
 }
