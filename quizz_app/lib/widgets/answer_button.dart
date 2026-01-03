@@ -11,6 +11,7 @@ class AnswerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: ElevatedButton(
         onPressed: onTap,
