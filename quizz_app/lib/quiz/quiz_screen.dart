@@ -36,6 +36,8 @@ class _QuizScreenState extends State<QuizScreen> {
         currentScreen = ResultsScreen(
           results: selectedAnswers,
         );
+
+        selectedAnswers = [];
       }
     });
   }

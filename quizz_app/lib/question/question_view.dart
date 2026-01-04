@@ -36,7 +36,7 @@ class QuestionView extends StatelessWidget {
                       onTap: () {
                         nextQuestion(answer);
                       });
-                }).toList()
+                })
               ]),
         ));
   }
