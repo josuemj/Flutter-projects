@@ -41,7 +41,9 @@ class ResultsView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
-            QuestionsSummary(answers: results),
+            Expanded(
+              child: QuestionsSummary(answers: results),
+            ),
             SizedBox(height: 30),
             Center(
               child: ElevatedButton(

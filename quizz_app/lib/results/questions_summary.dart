@@ -12,37 +12,60 @@ class QuestionsSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...answers.map((answer) => Row(
-              children: [
-                Text(
-                  answers.indexOf(answer).toString(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    color:
-                        answer == questions[answers.indexOf(answer)].answers[0]
-                            ? Color.fromARGB(255, 0, 255, 0)
-                            : Color.fromARGB(255, 255, 0, 0),
-                  ),
+    return ListView.builder(
+      itemCount: answers.length,
+      itemBuilder: (context, index) {
+        final answer = answers[index];
+        final question = questions[index];
+        final isCorrect = answer == question.answers[0];
+
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                index.toString(),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: isCorrect ? Colors.green : Colors.red,
                 ),
-                Column(
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(questions[answers.indexOf(answer)].text,
-                        style: TextStyle(color: Colors.white)),
+                    Text(
+                      question.text,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
                     Text(
                       answer,
-                      style: TextStyle(color: Colors.white70),
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                      ),
                     ),
+                    const SizedBox(height: 4),
                     Text(
-                      questions[answers.indexOf(answer)].answers[0],
-                      style: TextStyle(color: Colors.greenAccent),
+                      question.answers[0],
+                      style: const TextStyle(
+                        color: Colors.greenAccent,
+                        fontSize: 16,
+                      ),
                     ),
                   ],
-                )
-              ],
-            )),
-      ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
