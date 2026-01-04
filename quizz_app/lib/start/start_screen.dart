@@ -32,19 +32,21 @@ class _StartScreen extends State<StartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 45, 0, 96),
-              Color.fromARGB(255, 38, 13, 54),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 45, 0, 96),
+                Color.fromARGB(255, 38, 13, 54),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
+          child: activeScreen,
         ),
-        child: activeScreen,
       ),
     );
   }
