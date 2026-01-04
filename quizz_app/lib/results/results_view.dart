@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizz_app/data/questions.dart';
+import 'questions_summary.dart';
 
 class ResultsView extends StatelessWidget {
   const ResultsView({
@@ -40,7 +41,7 @@ class ResultsView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 30),
-            Text("results..."),
+            QuestionsSummary(answers: results),
             SizedBox(height: 30),
             Center(
               child: ElevatedButton(
