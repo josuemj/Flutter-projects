@@ -24,11 +24,29 @@ class QuestionsSummary extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                (index + 1).toString(),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: isCorrect ? Colors.green : Colors.red,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: isCorrect
+                      ? const LinearGradient(
+                          colors: [Colors.green, Colors.lightGreen],
+                        )
+                      : const LinearGradient(
+                          colors: [Colors.red, Colors.orange],
+                        ),
+                  border: Border.all(
+                    color: isCorrect ? Colors.green : Colors.red,
+                    width: 2,
+                  ),
+                ),
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  (index + 1).toString(),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(width: 20),
@@ -46,10 +64,13 @@ class QuestionsSummary extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       answer,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(
+                          color: isCorrect ? Colors.white70 : Colors.redAccent,
+                          fontSize: 16,
+                          decoration: isCorrect
+                              ? TextDecoration.none
+                              : TextDecoration.lineThrough,
+                          decorationThickness: 2),
                     ),
                     const SizedBox(height: 4),
                     Text(
