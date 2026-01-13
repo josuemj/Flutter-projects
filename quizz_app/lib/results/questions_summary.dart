@@ -25,7 +25,7 @@ class QuestionsSummary extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                index.toString(),
+                (index + 1).toString(),
                 style: TextStyle(
                   fontSize: 16,
                   color: isCorrect ? Colors.green : Colors.red,
