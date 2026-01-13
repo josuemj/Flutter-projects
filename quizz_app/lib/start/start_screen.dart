@@ -45,7 +45,24 @@ class _StartScreen extends State<StartScreen> {
               end: Alignment.bottomRight,
             ),
           ),
-          child: activeScreen,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 600),
+            switchInCurve: Curves.easeOutBack,
+            switchOutCurve: Curves.easeInBack,
+            transitionBuilder: (child, animation) {
+              return RotationTransition(
+                turns: Tween<double>(begin: 0.9, end: 1.0).animate(animation),
+                child: ScaleTransition(
+                  scale: animation,
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                ),
+              );
+            },
+            child: activeScreen,
+          ),
         ),
       ),
     );
