@@ -3,7 +3,7 @@ import 'package:quizz_app/question/question_view.dart';
 import '../data/questions.dart';
 import '../models/quiz_question.dart';
 import '../question/question_screen.dart';
-import '../results/results_screen.dart';
+import '../rcesults/results_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
