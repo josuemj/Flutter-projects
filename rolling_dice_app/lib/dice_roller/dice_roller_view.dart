@@ -15,24 +15,40 @@ class DiceRollerView extends StatefulWidget {
   State<DiceRollerView> createState() => _DiceRollerViewState();
 }
 
-class _DiceRollerViewState extends State<DiceRollerView> with SingleTickerProviderStateMixin {
-  late final AnimationController _animationController;
+class _DiceRollerViewState extends State<DiceRollerView> with TickerProviderStateMixin {
+  late final AnimationController _rotationAnimationController;
   late final Animation<double> _rotationAnimation;
+
+  late final AnimationController _pulseAnimationController;
+  late final Animation<double> _pulseAnimation;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _rotationAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
 
-    _rotationAnimation = Tween<double>(begin: 0, end: 2 * pi).animate(_animationController);
+    _rotationAnimation = Tween<double>(begin: 0, end: 2 * pi).animate(_rotationAnimationController);
+
+    _pulseAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.1).animate(
+      CurvedAnimation(
+        parent: _pulseAnimationController,
+        curve: Curves.easeInOut,
+      ),
+    );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _rotationAnimationController.dispose();
+    _pulseAnimationController.dispose();
     super.dispose();
   }
 
@@ -43,29 +59,40 @@ class _DiceRollerViewState extends State<DiceRollerView> with SingleTickerProvid
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AnimatedBuilder(
-          animation: _rotationAnimation,
-          child: Image.asset(
-            'assets/images/dice-${widget.diceValue}.png',
-            width: 150,
-            height: 150,
-          ),
+          animation: _pulseAnimation,
           builder: (context, child) {
-            return Transform.rotate(
-              angle: _rotationAnimation.value,
-              child: child,
+            return ScaleTransition(
+              scale: _pulseAnimation,
+              child: AnimatedBuilder(
+                animation: _rotationAnimation,
+                child: Image.asset(
+                  'assets/images/dice-${widget.diceValue}.png',
+                  width: 150,
+                  height: 150,
+                ),
+                builder: (context, child) {
+                  return Transform.rotate(
+                    angle: _rotationAnimation.value,
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            _animationController.forward(from: 0).then((_) {
-              widget.onRoll();
-            });
-          },
-          child: const Text(
-            'Roll Dice',
-            style: TextStyle(fontSize: 20),
+        ScaleTransition(
+          scale: _pulseAnimation,
+          child: ElevatedButton(
+            onPressed: () {
+              _rotationAnimationController.forward(from: 0).then((_) {
+                widget.onRoll();
+              });
+            },
+            child: const Text(
+              'Roll Dice',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
         ),
       ],
