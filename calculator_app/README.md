@@ -1,16 +1,46 @@
-# calculator_app
+# Calculator App
 
-A new Flutter project.
+A Flutter calculator application with a dark UI, animated button interactions, and expression evaluation.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Basic arithmetic operations (`+`, `-`, `×`, `÷`, `%`)
+- Sign toggle (`+/-`)
+- Clear (`C`) and delete (`DEL`) actions
+- Fade animation for result display
+- Press animation for calculator buttons
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```text
+calculator_app/
+├── lib/
+│   ├── main.dart              # App entry point and theme/system UI config
+│   ├── calculator.dart        # Calculator screen, logic, and button widget
+│   └── model/
+│       └── buttons.dart       # Button labels used by the grid
+├── test/
+│   └── widget_test.dart       # Default Flutter widget test (template)
+├── android/                   # Android platform files
+├── ios/                       # iOS platform files
+├── web/                       # Web platform files
+├── linux/                     # Linux desktop platform files
+├── macos/                     # macOS desktop platform files
+├── windows/                   # Windows desktop platform files
+├── pubspec.yaml               # Dependencies and project metadata
+└── analysis_options.yaml      # Lint configuration
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dependencies
+
+- `flutter`
+- `cupertino_icons`
+- `dart_eval`
+- `flutter_eval`
+
+## Run the App
+
+```bash
+flutter pub get
+flutter run
+```
